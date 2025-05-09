@@ -9,7 +9,7 @@ plugged_output = "output_name" # Output configuration (model's final output)
 
 [dataset.dataset_name]
 address = "/home/dev/datasets/exemple_1.bin" # Path to the dataset
-samples = [ { "name": "sample_name", "quantity": 10 } ] # List of samples in the dataset
+samples = [ { "name" = "sample_name", "quantity" = 10 } ] # List of samples in the dataset
 
 [layers]
 
