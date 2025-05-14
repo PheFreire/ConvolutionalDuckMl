@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Dict, Optional
 
+from duckdi import Interface
+
 from modules.hyperparameters.domain.dtos import (
     TrainingHyperparameterDto,
     DatasetHyperparameterDto,
@@ -10,6 +12,7 @@ from modules.hyperparameters.domain.dtos import (
 )
 from modules.hyperparameters.domain.dtos.output_hyperparameter_dto import OutputHyperparameterDto
 
+@Interface
 class IHyperparametersRepository(ABC):
     """
     # Repository for managing hyperparameters.
@@ -103,3 +106,7 @@ class IHyperparametersRepository(ABC):
         # Raises:
             - ValueError: If hyperparameters are not loaded, an error is raised.
         """
+    
+    @abstractmethod
+    def __str__(self) -> str:
+        pass

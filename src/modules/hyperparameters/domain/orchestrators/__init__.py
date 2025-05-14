@@ -1,3 +1,3 @@
-from modules.hyperparameters.hyper_parameters_loader import LoadHyperparametersOrchestrator
+from modules.hyperparameters.domain.orchestrators.load_hyperparameters_orchestrator import LoadHyperparametersOrchestrator
 
 __all__ = ['LoadHyperparametersOrchestrator' , ]

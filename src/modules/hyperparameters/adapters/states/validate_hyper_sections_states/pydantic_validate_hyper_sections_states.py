@@ -8,7 +8,7 @@ from modules.hyperparameters.domain.dtos import (
     LayerHyperparameterDto,
     ModelHyperparameterDto,
 )
-from config.app_error import AppError
+from framework.app_error import AppError
 from typing import Any, Dict, Type
 from pydantic import BaseModel
 
@@ -34,7 +34,8 @@ class PydanticValidateHyperSectionsState(IValidateHyperSectionsState):
 
     def validate[T](self, section: str, dto_class: Type[T], sub_key: str) -> T:
         section_data = self.get(self.config, section)
-        if isinstance(dto_class, BaseModel):
+
+        if issubclass(dto_class, BaseModel):
             return dto_class.model_validate(self.get(section_data, sub_key))
 
         raise AppError(

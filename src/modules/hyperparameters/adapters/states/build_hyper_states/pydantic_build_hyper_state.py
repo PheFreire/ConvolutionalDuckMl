@@ -1,5 +1,6 @@
-from modules.hyperparameters.adapters.states.load_hyper_into_cache_states import PydanticLoadHyperIntoCacheState
-from modules.hyperparameters.domain.interfaces.states import IBuildHyperState, ILoadHyperIntoCacheState
+from modules.hyperparameters.domain.interfaces.states.i_build_hyper_state import IBuildHyperState
+from modules.hyperparameters.domain.interfaces.terminals.i_load_hyper_terminal import ILoadHyperTerminal
+from modules.hyperparameters.adapters.terminals.load_hyper_terminals.load_hyper_terminal import LoadHyperTerminal
 from modules.hyperparameters.domain.dtos import (
     TrainingHyperparameterDto,
     DatasetHyperparameterDto,
@@ -10,14 +11,15 @@ from modules.hyperparameters.domain.dtos import (
 )
 from typing import Dict
 
+
 class PydanticBuildHyperState(IBuildHyperState):
     def __init__(
         self,
-        training: TrainingHyperparameterDto,
+        model: ModelHyperparameterDto,
         dataset: DatasetHyperparameterDto,
+        training: TrainingHyperparameterDto,
         output: OutputHyperparameterDto,
         layers: Dict[str, LayerHyperparameterDto],
-        model: ModelHyperparameterDto,
     ) -> None:
         self.hyperparameters = {
             "training": training, 
@@ -27,7 +29,7 @@ class PydanticBuildHyperState(IBuildHyperState):
             "model": model, 
         }
 
-    def call(self) -> ILoadHyperIntoCacheState:
-        return PydanticLoadHyperIntoCacheState(
+    def call(self) -> ILoadHyperTerminal:
+        return LoadHyperTerminal(
             HyperparametersDto.model_validate(self.hyperparameters)
         )

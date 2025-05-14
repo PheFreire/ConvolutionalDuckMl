@@ -1,3 +1,3 @@
-from modules.hyperparameters.adapters.repositories.hyperparameters_repositories.pydantic_hyperparameters_repository import PydanticHyperparametersRepository
+from modules.hyperparameters.adapters.repositories.hyperparameters_repositories.hyperparameters_repository import HyperparametersRepository
 
-__all__ = ['PydanticHyperparametersRepository', ]
+__all__ = ['HyperparametersRepository', ]

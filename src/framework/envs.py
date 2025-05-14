@@ -1,4 +1,4 @@
-from config.app_error import AppError
+from framework.app_error import AppError
 import os
 
 class Envs:

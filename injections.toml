@@ -1,0 +1,3 @@
+[injections]
+i_hyperparameters_repository = 'hyperparameters_repository'
+i_load_hyper_factory = 'toml_load_hyper_factory'

@@ -1,4 +1,5 @@
-from config.app_error import AppError
+import json
+from framework.app_error import AppError
 from modules.hyperparameters.domain.dtos.output_hyperparameter_dto import OutputHyperparameterDto
 from modules.hyperparameters.domain.interfaces.repositories import IHyperparametersRepository
 from modules.hyperparameters.domain.dtos import (
@@ -10,7 +11,7 @@ from modules.hyperparameters.domain.dtos import (
 )
 from typing import Dict, Optional
 
-class PydanticHyperparametersRepository(IHyperparametersRepository):
+class HyperparametersRepository(IHyperparametersRepository):
     __hyperparameters: Optional[HyperparametersDto] = None
     
     @classmethod
@@ -49,3 +50,21 @@ class PydanticHyperparametersRepository(IHyperparametersRepository):
             details={"current_state": "not_loaded"},
             code=400,
         )
+    
+    def __str__(self) -> str:
+        line = '-=' * 30
+        
+        if self.__hyperparameters is None:
+            return ""
+        
+        data = json.dumps({
+            "model": self.model.model_dump(),
+            "dataset": self.dataset.model_dump(),
+            "layers": {n: layer.model_dump() for n, layer in self.layers.items()},
+            "training": self.training.model_dump(),
+            "output": self.output.model_dump(),
+        }, ensure_ascii=False, indent=3)
+
+        return f"\n{line}\n\nhyperparameters = {data}\n\n{line}\n"
+        
+

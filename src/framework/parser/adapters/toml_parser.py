@@ -1,5 +1,5 @@
-from config.parser.interfaces.i_parser import IParser
-from config.app_error import AppError
+from framework.parser.interfaces.parser import IParser
+from framework.app_error import AppError
 from typing import Any, Dict
 import toml
 

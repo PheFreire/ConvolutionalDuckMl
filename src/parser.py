@@ -1,9 +1,9 @@
 from struct import unpack
 import struct
-import os
+from typing import Any, Dict, Generator
 
 
-def unpack_drawing(file_handle):
+def unpack_drawing(file_handle) -> Dict[str, Any]:
     key_id, = unpack('Q', file_handle.read(8))
     country_code, = unpack('2s', file_handle.read(2))
     recognized, = unpack('b', file_handle.read(1))
@@ -25,8 +25,7 @@ def unpack_drawing(file_handle):
         'image': image
     }
 
-
-def unpack_drawings(filename: str):
+def unpack_drawings(filename: str) -> Generator[Dict[str, Any], Any, Any]:
     with open(filename, 'rb') as f:
         while True:
             try:
@@ -34,7 +33,4 @@ def unpack_drawings(filename: str):
             except struct.error:
                 break
 
-filename = os.getenv('DATASET_ADDRESS')
-for drawing in unpack_drawings(filename):
-    print(drawing['country_code'])
-    breakpoint()
+

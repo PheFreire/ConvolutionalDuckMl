@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Literal, Union
 
 
 ADRESS_DOC = """
@@ -25,10 +25,10 @@ class SampleHyperparameterDto(BaseModel):
     
     Attributes:
     - name (str): The name of the sample.
-    - quantity (int): The quantity of this sample in the dataset.
+    - quantity (int | '*'): The quantity of this sample in the dataset.
     """
     name: str
-    quantity: int
+    quantity: Union[int, Literal['*']]
 
 class DatasetHyperparameterDto(BaseModel):
     """

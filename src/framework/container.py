@@ -1,0 +1,6 @@
+from modules.hyperparameters.adapters.repositories.hyperparameters_repositories import HyperparametersRepository
+from modules.hyperparameters.adapters.factories.load_hyper_factories import TomlLoadHyperFactory
+from duckdi import register
+
+register(TomlLoadHyperFactory)
+register(HyperparametersRepository)

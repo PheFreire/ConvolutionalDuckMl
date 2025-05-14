@@ -57,7 +57,8 @@ test: ## run tests
 
 run: ## run
 	echo "🚀 Starting FastAPI server..."
-	cd ./src && exec poetry run uvicorn main:app --reload --host=${API_HOST} --port=${API_PORT}
+	# cd ./src && exec poetry run uvicorn main:app --reload --host=${API_HOST} --port=${API_PORT}
+	cd ./src && exec poetry run python main.py
 
 ##@ Docs
 

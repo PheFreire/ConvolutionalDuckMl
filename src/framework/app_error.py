@@ -38,6 +38,13 @@ class AppError(Exception):
         }
 
     def __str__(self) -> str:
-        error_msg = f"({self.code})[{self.title.upper()}]: {self.message}\n\n"
-        error_msg += json.dumps(self.error, ensure_ascii=False, indent=3)
-        return error_msg
+        line = '-=' * 30
+        try:
+            error_details = json.dumps(self.error, ensure_ascii=False, indent=3)
+        except TypeError:
+            error_details = ""
+            for k, v in self.error.items():
+                error_details += f" {k}: {v}\n"
+
+        return f"\n{line}\n\n({self.code})[{self.title.upper()}]: {self.message}\n\n{error_details}\n{line}\n"
+        
