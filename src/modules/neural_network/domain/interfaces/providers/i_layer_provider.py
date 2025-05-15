@@ -1,70 +1,69 @@
-from modules.neural_network.domain.interfaces.providers.i_activation_function_provider import IActivationFunctionProvider
-from modules.neural_network.domain.interfaces.providers.i_tensor_provider import ITensor
+from modules.neural_network.domain.interfaces.providers import ITensor, IPerceptronProvider
 from abc import abstractmethod
 from typing import Self
-
 
 class ILayerProvider:
     @classmethod
     @abstractmethod
-    def new(cls, layer_size: int, input_size: int, activation_function: IActivationFunctionProvider) -> Self:
+    def new(cls, layer_size: int, base_perceptron: IPerceptronProvider) -> Self:
         """
-        Factory method to create a new neural layer.
+        Instantiate a new neural layer composed of multiple perceptrons.
 
-        Initializes a layer composed of a specified number of perceptrons, each with
-        a given input size and a shared activation function.
+        This factory method constructs a layer by replicating a given base perceptron
+        a number of times equal to `layer_size`. Each perceptron will inherit the same
+        configuration (weights, activation function, tensor backend) from the base instance.
 
-        Parameters:
-            layer_size (int): The number of perceptrons (neurons) in the layer.
-            input_size (int): The size of the input vector each perceptron receives.
-            activation_function (IActivationFunctionProvider): The activation function to be used
-                by all perceptrons in this layer.
+        Args:
+            layer_size (int): The total number of perceptrons to include in the layer.
+            base_perceptron (IPerceptronProvider): A perceptron used as the template for duplication.
 
         Returns:
-            Self: A new instance of the implementing layer class.
+            Self: A new instance of the layer, composed of independent perceptrons.
         """
         pass
 
     @abstractmethod
-    def foward(self, input: ITensor) -> ITensor:
+    def forward(self, input: ITensor) -> ITensor:
         """
-        Perform the forward pass for the entire layer.
+        Perform the forward propagation step across all perceptrons in the layer.
 
-        Applies each perceptron's forward logic to the input tensor and aggregates
-        the results into a single output tensor representing the layer's output.
+        Each perceptron receives the same input tensor and produces a scalar output.
+        The outputs are aggregated into a single tensor representing the layer's output vector.
 
-        Parameters:
-            input (ITensor): The input tensor to the layer.
+        Args:
+            input (ITensor): Input tensor representing the features for the entire layer.
 
         Returns:
-            ITensor: The layer's output tensor, composed of all perceptrons' outputs.
+            ITensor: A tensor containing the outputs of all perceptrons in the layer.
         """
         pass
 
     @abstractmethod
-    def backward(self, l_rate: float, delta: ITensor) -> ITensor:
+    def backward(self, l_rate: ITensor, delta: ITensor) -> ITensor:
         """
-        Perform the backward pass for the layer.
+        Perform the backward propagation step across all perceptrons in the layer.
 
-        Propagates the error gradient through each perceptron, updates the weights and biases
-        using the learning rate, and calculates the gradient to pass to the previous layer.
+        Each perceptron receives a corresponding slice of the `delta` tensor and uses it
+        to update its weights and bias. The method returns the accumulated error to be
+        propagated to the previous layer.
 
-        Parameters:
-            l_rate (float): The learning rate for gradient descent.
-            delta (ITensor): The gradient of the loss with respect to the layer's output.
+        Args:
+            l_rate (ITensor): Learning rate tensor used to scale the gradient updates.
+            delta (ITensor): Error tensor received from the next layer or loss function,
+                with one value per perceptron.
 
         Returns:
-            ITensor: The gradient of the loss with respect to the layer's input.
+            ITensor: A tensor containing the gradient of the loss with respect to the input.
         """
         pass
 
     @abstractmethod
     def __len__(self) -> int:
         """
-        Return the number of perceptrons (neurons) in the layer.
+        Return the number of perceptrons in the layer.
 
         Returns:
-            int: The number of perceptrons.
+            int: The total number of perceptrons (neurons) in this layer.
         """
         pass
 

@@ -36,9 +36,4 @@ class NeuralNetwork:
 
         for layer in reversed(self.layers):
             delta = layer.backward(l_rate, delta)
-        
-        
-
-
-        
-        
+       

@@ -2,60 +2,77 @@ from modules.neural_network.domain.interfaces.providers.i_activation_function_pr
 from modules.neural_network.domain.interfaces.providers.i_tensor_provider import ITensor
 from abc import ABC, abstractmethod
 from typing import Self
+from duckdi import Interface
 
+@Interface
 class IPerceptronProvider(ABC):
     @classmethod
     @abstractmethod
-    def new(cls, input_size: int, activation_function: IActivationFunctionProvider) -> Self:
+    def new(cls, input_size: int, activation_function: IActivationFunctionProvider, tensor_type: ITensor) -> Self:
         """
-        Factory method to create a new perceptron instance.
+        Create a new perceptron instance with initialized weights and bias.
 
-        This method initializes a perceptron with the given input size and the specified
-        activation function provider.
+        This factory method constructs a perceptron configured to receive a specific number
+        of input features. The perceptron uses the provided activation function and tensor
+        adapter to initialize and manage internal computations.
 
-        Parameters:
-            input_size (int): The number of input features this perceptron will receive.
-            activation_function (IActivationFunctionProvider): An object that provides the
-                activation function and its derivative, used in forward and backward passes.
+        Args:
+            input_size (int): Number of input features expected by this perceptron.
+            activation_function (IActivationFunctionProvider): Provider responsible for computing
+                the activation and its derivative during forward and backward passes.
+            tensor_type (ITensor): A tensor adapter used to initialize and perform tensor operations.
+                Determines the numerical backend (e.g., NumPy, Torch).
 
         Returns:
-            Self: A new instance of the implementing perceptron class.
+            Self: A fully initialized perceptron instance.
         """
         pass
 
     @abstractmethod
-    def foward(self, x: ITensor) -> ITensor:
+    def forward(self, x: ITensor) -> ITensor:
         """
-        Perform the forward pass of the perceptron.
+        Perform the forward computation for the perceptron.
 
-        This method calculates the output of the perceptron given the input tensor `x`.
-        It typically includes computing the weighted sum plus bias, followed by applying
-        the activation function.
+        This method calculates the perceptron's output given the input tensor `x`.
+        The process involves computing a weighted sum followed by applying the
+        activation function.
 
-        Parameters:
-            x (ITensor): The input tensor.
+        Args:
+            x (ITensor): Input tensor representing the features for this perceptron.
 
         Returns:
-            ITensor: The output tensor after applying the activation function.
+            ITensor: Output tensor after applying weights, bias, and activation function.
         """
         pass
 
     @abstractmethod
-    def backward(self, delta: ITensor, l_rate: float) -> ITensor:
+    def backward(self, delta: ITensor, l_rate: ITensor) -> ITensor:
         """
-        Perform the backward pass of the perceptron.
+        Perform the backward computation (backpropagation) for the perceptron.
 
-        This method updates the perceptron's weights and bias using the provided
-        error gradient (delta) and learning rate. It also computes the gradient to
-        propagate to the previous layer in the network.
+        This method updates the perceptron's weights and bias based on the error gradient `delta`,
+        and the provided learning rate. It also computes the gradient to propagate to the previous
+        layer of the network.
 
-        Parameters:
-            delta (ITensor): The gradient of the loss with respect to the perceptron's output.
-            l_rate (float): The learning rate used to scale the weight and bias updates.
+        Args:
+            delta (ITensor): The error signal from the next layer or loss function.
+            l_rate (ITensor): Learning rate tensor used to scale updates.
 
         Returns:
-            ITensor: The gradient of the loss with respect to the perceptron's input,
-                     which should be passed back to the previous layer.
+            ITensor: The propagated gradient with respect to the perceptron's input.
+        """
+        pass
+    
+    @abstractmethod
+    def copy(self) -> Self:
+        """
+        Create a deep copy of this perceptron.
+
+        The copied instance should retain the same weights, bias, activation function, and tensor type.
+        This is typically used when duplicating perceptrons to build layers.
+
+        Returns:
+            Self: A new instance identical to the current perceptron.
         """
         pass
 

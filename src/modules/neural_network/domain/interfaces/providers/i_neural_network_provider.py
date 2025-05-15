@@ -1,39 +1,54 @@
-from modules.neural_network.domain.interfaces.providers import ITensor, ILayerProvider
+from modules.neural_network.domain.interfaces.providers import ITensor, ILayerProvider, IErrorFunctionProvider
 from abc import ABC, abstractmethod
 from typing import Dict, Self
 
 class INeuralNetworkProvider(ABC):
-    @abstractmethod
     @classmethod
-    def new(cls, layers: Dict[str, ILayerProvider]) -> Self:
+    @abstractmethod
+    def new(cls, layers: Dict[str, ILayerProvider], error_function: IErrorFunctionProvider) -> Self:
         """
-        Create a new instance of a neural network using the specified layers.
+        Create a new neural network instance with defined layers and error function.
 
-        Parameters:
-            layers (ILayerProvider): A fully constructed set of layers to use in the network.
+        This factory method constructs the neural network using the provided mapping
+        of labeled layers (e.g., "input", "hidden_1", "output") and an error function
+        to compute the loss and its gradient.
+
+        Args:
+            layers (Dict[str, ILayerProvider]): A dictionary mapping layer names to their implementations.
+            error_function (IErrorFunctionProvider): The error function used to compute the loss and its gradient.
 
         Returns:
-            Self: An initialized instance of the neural network.
+            Self: A fully initialized instance of the neural network.
         """
         pass
 
     @abstractmethod
     def propagate(self, x: ITensor, y: ITensor) -> ITensor:
         """
-        Perform the forward pass of the network and compute the loss.
+        Perform the forward pass through all layers of the network and compute the loss.
 
-        Parameters:
-            x (ITensor): The input tensor.
-            y (ITensor): The expected output tensor (labels or targets).
+        Each layer receives the output of the previous one, culminating in a final prediction.
+        The loss between the final output and the target is computed using the provided error function.
+
+        Args:
+            x (ITensor): Input tensor representing the input features.
+            y (ITensor): Ground-truth output tensor (expected labels or values).
+
+        Returns:
+            ITensor: A tensor containing the scalar loss value.
         """
         pass
-    
+
     @abstractmethod
-    def back_propagate(self, l_rate: float) -> None:
+    def back_propagate(self, l_rate: ITensor) -> None:
         """
-        Perform the backward pass (gradient computation and update).
+        Execute the backward pass to compute gradients and update all trainable parameters.
 
-        Parameters:
-            l_rate (float): The learning rate to be used for weight and bias updates.
+        This method uses the previously computed loss (from `propagate`) to initiate backpropagation,
+        updating weights and biases using the specified learning rate.
+
+        Args:
+            l_rate (ITensor): A tensor representing the learning rate to apply during parameter updates.
         """
         pass
+

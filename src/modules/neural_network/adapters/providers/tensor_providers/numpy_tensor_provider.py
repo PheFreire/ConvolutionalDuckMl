@@ -1,12 +1,12 @@
 from modules.neural_network.domain.interfaces.providers import ITensor
 from modules.neural_network.domain.interfaces.providers import Matrix
-from typing import Any, Union, Self 
+from typing import Any, Iterator, List, Union, Self 
 from numpy.typing import NDArray
 
 import numpy as np
 
 class NumpyTensor(ITensor):
-    def __init__(self, data: NDArray[np.float64]):
+    def __init__(self, data: NDArray[np.float64]=np.array([], dtype=np.float64)):
         self._data = data.astype(np.float64)
 
     @classmethod
@@ -14,8 +14,13 @@ class NumpyTensor(ITensor):
         return cls(np.array(tensor, dtype=np.float64))
 
     @classmethod
-    def random(cls, *shape: int) -> Self:
+    def from_random(cls, *shape: int) -> Self:
         return cls(np.random.rand(*shape))
+
+    @classmethod
+    def from_tensors(cls, tensors: List[Self]) -> Self:
+        data = np.array([t.value for t in tensors], dtype=np.float64)
+        return cls(data)
 
     @property
     def value(self) -> NDArray[np.float64]:
@@ -102,6 +107,10 @@ class NumpyTensor(ITensor):
     def __ne__(self, other: Any) -> bool:
         return not self.__eq__(other)
 
+    
+    def __iter__(self) -> Iterator[float]:
+        return iter(self._data.flatten())
+
 
     def shape(self) -> tuple[int, ...]:
         return self._data.shape
@@ -124,3 +133,5 @@ class NumpyTensor(ITensor):
     def copy(self) -> 'NumpyTensor':
         return NumpyTensor(self._data.copy())
     
+    def max(self) -> float:
+        return float(np.max(self._data))

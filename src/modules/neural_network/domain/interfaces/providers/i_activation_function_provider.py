@@ -1,22 +1,23 @@
-from modules.neural_network.domain.interfaces.providers.i_tensor_provider import ITensor
 from abc import ABC, abstractmethod
 from typing import Self
+from modules.neural_network.domain.interfaces.providers.i_tensor_provider import ITensor
 
 class IActivationFunctionProvider(ABC):
     @classmethod
     @abstractmethod
-    def new(cls, action_function: str) -> Self:
+    def new(cls, activation_function: str) -> Self:
         """
-        Factory method to create an activation function provider.
+        Instantiate a new activation function provider based on the given function name.
 
-        Initializes the provider with a specified activation function by name,
-        such as "sigmoid", "relu", or "softmax".
+        This factory method initializes the provider using a named activation function
+        such as "sigmoid", "relu", or "softmax". The provider will be responsible for
+        applying this function and its derivative during forward and backward passes.
 
-        Parameters:
-            action_function (str): The name of the activation function to use.
+        Args:
+            activation_function (str): The name of the activation function to use.
 
         Returns:
-            Self: An instance of the implementing activation function provider class.
+            Self: A configured activation function provider instance.
         """
         pass
 
@@ -25,30 +26,43 @@ class IActivationFunctionProvider(ABC):
         """
         Apply the activation function to the input tensor.
 
-        This method performs the element-wise activation computation, used during
-        the forward pass of a neural network.
+        This method is typically called during the forward pass of a perceptron or layer,
+        transforming the pre-activation value (z) into the activated output (ŷ).
 
-        Parameters:
-            input (ITensor): The input tensor to be activated.
+        Args:
+            input (ITensor): The input tensor to which the activation function will be applied.
 
         Returns:
-            ITensor: The result after applying the activation function.
+            ITensor: The result of applying the activation function element-wise.
         """
         pass
 
     @abstractmethod
     def d_execute(self, input: ITensor) -> ITensor:
         """
-        Compute the derivative of the activation function.
+        Compute the derivative of the activation function for the given input.
 
-        This method is typically used during the backward pass for computing
-        gradients with respect to the output of the activation function.
+        This method is used during the backward pass to calculate the local gradient
+        of the activation function with respect to the input.
 
-        Parameters:
-            input (ITensor): The tensor with values to differentiate (usually the pre-activation output).
+        Args:
+            input (ITensor): The input tensor (typically the pre-activation value z).
 
         Returns:
-            ITensor: The gradient (derivative) of the activation function evaluated at the input.
+            ITensor: The element-wise derivative of the activation function evaluated at the input.
+        """
+        pass
+    
+    @abstractmethod
+    def copy(self) -> Self:
+        """
+        Create a deep copy of the activation function provider.
+
+        The returned instance should retain the same activation function configuration
+        and behavior as the original.
+
+        Returns:
+            Self: A new instance of the activation function provider.
         """
         pass
 

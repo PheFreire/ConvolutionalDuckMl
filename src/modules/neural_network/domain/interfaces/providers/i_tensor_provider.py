@@ -1,4 +1,4 @@
-from typing import Any, Self, Union, TypeAlias
+from typing import Any, Iterator, List, Self, Union, TypeAlias
 from abc import ABC, abstractmethod
 
 Matrix: TypeAlias = Union[float, list['Matrix']]
@@ -15,10 +15,28 @@ class ITensor(ABC):
 
     @classmethod
     @abstractmethod
-    def random(cls, *shape: int) -> Self:
+    def from_random(cls, *shape: int) -> Self:
         """
         Generate a tensor filled with random values within the given shape.
         Example: random(2, 3) → tensor with shape (2, 3)
+        """
+        pass
+
+    @classmethod
+    @abstractmethod
+    def from_tensors(cls, tensors: List[Self]) -> Self:
+        """
+        Construct a single tensor from a list of tensors.
+
+        This is typically used to combine the outputs of multiple perceptrons
+        (e.g., in a layer) into a single tensor vector. All input tensors must
+        be compatible (e.g., scalars or 1D tensors of the same shape).
+
+        Parameters:
+            tensors (List[Self]): A list of individual tensor instances to combine.
+
+        Returns:
+            Self: A new tensor containing the concatenated values.
         """
         pass
 
@@ -78,6 +96,9 @@ class ITensor(ABC):
     def __ne__(self, other: Any) -> bool: ...
 
     @abstractmethod
+    def __iter__(self) -> Iterator[float]: ...
+
+    @abstractmethod
     def shape(self) -> tuple[int, ...]:
         """
         Return the tensor's shape as a tuple of integers.
@@ -130,4 +151,13 @@ class ITensor(ABC):
         Modifications to the copy will not affect the original.
         """
         pass
+ 
+    @abstractmethod
+    def max(self) -> float:
+        """
+        Return the maximum value in the tensor.
 
+        Returns:
+            float: The largest scalar value in the tensor.
+        """
+        pass
