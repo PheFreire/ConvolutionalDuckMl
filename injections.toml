@@ -1,3 +1,11 @@
 [injections]
+i_activation_function_provider = 'activation_function_provider'
 i_hyperparameters_repository = 'hyperparameters_repository'
+i_error_function_provider = 'mse_error_function_provider'
+i_neural_network_provider = 'neural_network_provider'
+i_neural_network_factory = 'neural_network_factory'
 i_load_hyper_factory = 'toml_load_hyper_factory'
+i_perceptron_provider = 'perceptron_provider'
+i_layer_provider = 'layer_provider'
+i_tensor = 'numpy_tensor'
+

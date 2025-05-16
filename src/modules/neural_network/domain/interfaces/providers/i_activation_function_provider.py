@@ -1,8 +1,19 @@
 from abc import ABC, abstractmethod
 from typing import Self
-from modules.neural_network.domain.interfaces.providers.i_tensor_provider import ITensor
 
+from duckdi import Interface
+
+from modules.neural_network.domain.interfaces.providers.i_tensor_provider import \
+    ITensor
+
+
+@Interface
 class IActivationFunctionProvider(ABC):
+    @property
+    @abstractmethod
+    def activation(self) -> str:
+        pass
+
     @classmethod
     @abstractmethod
     def new(cls, activation_function: str) -> Self:
@@ -52,7 +63,7 @@ class IActivationFunctionProvider(ABC):
             ITensor: The element-wise derivative of the activation function evaluated at the input.
         """
         pass
-    
+
     @abstractmethod
     def copy(self) -> Self:
         """
@@ -65,4 +76,3 @@ class IActivationFunctionProvider(ABC):
             Self: A new instance of the activation function provider.
         """
         pass
-

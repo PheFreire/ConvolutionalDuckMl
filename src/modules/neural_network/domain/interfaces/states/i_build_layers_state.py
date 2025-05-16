@@ -1,6 +1,9 @@
-from modules.neural_network.domain.interfaces.terminals import INeuralNetworkTerminal
-from modules.neural_network.domain.interfaces.providers import ILayerProvider
 from abc import ABC, abstractmethod
+
+from modules.neural_network.domain.interfaces.providers import ILayerProvider
+from modules.neural_network.domain.interfaces.terminals import \
+    INeuralNetworkTerminal
+
 
 class IBuildLayersState(ABC):
     @abstractmethod
@@ -9,7 +12,7 @@ class IBuildLayersState(ABC):
         Set the layer provider to be used for constructing complete layers from ther base perceptrons.
 
         Parameters:
-            layer_provider (ILayerProvider): 
+            layer_provider (ILayerProvider):
                 Responsible for building layers composed of perceptrons with the defined hyperparameters.
 
         Returns:

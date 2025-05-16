@@ -1,7 +1,10 @@
-from framework.parser.interfaces.parser import IParser
-from framework.app_error import AppError
 from typing import Any, Dict
+
 import toml
+
+from framework.app_error import AppError
+from framework.parser.interfaces.parser import IParser
+
 
 class TomlParser(IParser):
     def load(self, path: str) -> Dict[str, Any]:
@@ -24,10 +27,6 @@ class TomlParser(IParser):
                 class_pointer=self,
                 title="TomlFileLoadError",
                 message="Failed to load the TOML file.",
-                details={
-                    "exception_details": str(e),
-                    "invalid_path": path
-                },
+                details={"exception_details": str(e), "invalid_path": path},
                 code=500,
             )
-

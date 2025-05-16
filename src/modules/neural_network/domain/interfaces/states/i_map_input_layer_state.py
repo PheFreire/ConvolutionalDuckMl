@@ -1,6 +1,9 @@
-from modules.neural_network.domain.interfaces.states.i_map_layer_hyperparameters_state import IMapLayerHyperparametersState
-from modules.neural_network.domain.interfaces.providers import ITensor
 from abc import ABC, abstractmethod
+
+from modules.neural_network.domain.interfaces.providers import ITensor
+from modules.neural_network.domain.interfaces.states.i_map_layer_hyperparameters_state import \
+    IMapLayerHyperparametersState
+
 
 class IMapInputLayerState(ABC):
     @abstractmethod

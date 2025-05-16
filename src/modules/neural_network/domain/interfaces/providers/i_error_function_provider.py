@@ -1,7 +1,13 @@
 from abc import ABC, abstractmethod
 from typing import Self
-from modules.neural_network.domain.interfaces.providers import ITensor
 
+from duckdi import Interface
+
+from modules.neural_network.domain.interfaces.providers.i_tensor_provider import \
+    ITensor
+
+
+@Interface
 class IErrorFunctionProvider(ABC):
     @classmethod
     @abstractmethod
@@ -47,4 +53,3 @@ class IErrorFunctionProvider(ABC):
                      with respect to the model's predicted output.
         """
         pass
-

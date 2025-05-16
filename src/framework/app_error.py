@@ -1,10 +1,11 @@
-from typing import Any, Dict
 import json
+from typing import Any, Dict
+
 
 class AppError(Exception):
     """
     Custom exception class to represent application errors with detailed information.
-    
+
     Attributes:
     - class_pointer: The class instance where the error originated.
     - title: A short, human-readable title for the error.
@@ -12,12 +13,12 @@ class AppError(Exception):
     - details: Additional details for the error, typically a dictionary with further information.
     - code: An HTTP-like status code representing the type of error (default is 400).
     """
-    
+
     def __init__(
-        self, 
+        self,
         class_pointer: Any,
         title: str,
-        message: str = "", 
+        message: str = "",
         details: Dict[str, Any] = {},
         code: int = 400,
     ) -> None:
@@ -26,7 +27,7 @@ class AppError(Exception):
         self.message = message
         self.details = details
         self.code = code
-    
+
     @property
     def error(self) -> Dict[str, Any]:
         return {
@@ -38,7 +39,7 @@ class AppError(Exception):
         }
 
     def __str__(self) -> str:
-        line = '-=' * 30
+        line = "-=" * 30
         try:
             error_details = json.dumps(self.error, ensure_ascii=False, indent=3)
         except TypeError:
@@ -47,4 +48,3 @@ class AppError(Exception):
                 error_details += f" {k}: {v}\n"
 
         return f"\n{line}\n\n({self.code})[{self.title.upper()}]: {self.message}\n\n{error_details}\n{line}\n"
-        

@@ -1,34 +1,44 @@
-from modules.hyperparameters.adapters.states.build_hyper_states import PydanticBuildHyperState
-from modules.hyperparameters.domain.interfaces.states import IValidateHyperSectionsState
-from modules.hyperparameters.domain.interfaces.states import IBuildHyperState
-from modules.hyperparameters.domain.dtos import (
-    TrainingHyperparameterDto,
-    DatasetHyperparameterDto,
-    OutputHyperparameterDto,
-    LayerHyperparameterDto,
-    ModelHyperparameterDto,
-)
-from framework.app_error import AppError
 from typing import Any, Dict, Type
+
 from pydantic import BaseModel
+
+from framework.app_error import AppError
+from modules.hyperparameters.adapters.states.build_hyper_states import \
+    PydanticBuildHyperState
+from modules.hyperparameters.domain.dtos import (DatasetHyperparameterDto,
+                                                 LayerHyperparameterDto,
+                                                 ModelHyperparameterDto,
+                                                 OutputHyperparameterDto,
+                                                 TrainingHyperparameterDto)
+from modules.hyperparameters.domain.interfaces.states import (
+    IBuildHyperState, IValidateHyperSectionsState)
+
 
 class PydanticValidateHyperSectionsState(IValidateHyperSectionsState):
     def __init__(self, config: Dict[str, Any]) -> None:
         self.config = config
 
     def call(self) -> IBuildHyperState:
-        model = ModelHyperparameterDto.model_validate(self.get(self.config, 'model'))
-        dataset = self.validate('datasets', DatasetHyperparameterDto, model.plugged_dataset)
-        training = self.validate('trainings', TrainingHyperparameterDto, model.plugged_training)
-        output = self.validate('outputs', OutputHyperparameterDto, model.plugged_output)
+        model = ModelHyperparameterDto.model_validate(self.get(self.config, "model"))
+        dataset = self.validate(
+            "datasets", DatasetHyperparameterDto, model.plugged_dataset
+        )
+        training = self.validate(
+            "trainings", TrainingHyperparameterDto, model.plugged_training
+        )
+        output = self.validate("outputs", OutputHyperparameterDto, model.plugged_output)
         layers = self.validate_layers(model)
 
         return PydanticBuildHyperState(model, dataset, training, output, layers)
 
-    def validate_layers(self, model: ModelHyperparameterDto) -> Dict[str, LayerHyperparameterDto]:
-        layers_data = self.get(self.config, 'layers')
+    def validate_layers(
+        self, model: ModelHyperparameterDto
+    ) -> Dict[str, LayerHyperparameterDto]:
+        layers_data = self.get(self.config, "layers")
         return {
-            layer_name: LayerHyperparameterDto.model_validate(self.get(layers_data, layer_name))
+            layer_name: LayerHyperparameterDto.model_validate(
+                self.get(layers_data, layer_name)
+            )
             for layer_name in model.plugged_layers
         }
 
@@ -40,9 +50,9 @@ class PydanticValidateHyperSectionsState(IValidateHyperSectionsState):
 
         raise AppError(
             class_pointer=self,
-            title="Hyperparameter Validator TypeError", 
-            message="Hyperparameter validator should be a Pydantic Basemodel instance!", 
-            details={ "invalid_validator_type": type(dto_class) },
+            title="Hyperparameter Validator TypeError",
+            message="Hyperparameter validator should be a Pydantic Basemodel instance!",
+            details={"invalid_validator_type": type(dto_class)},
             code=500,
         )
 
@@ -50,11 +60,11 @@ class PydanticValidateHyperSectionsState(IValidateHyperSectionsState):
         data = struct.get(key)
         if data is not None:
             return data
-        
+
         raise AppError(
             class_pointer=self,
-            title="Hyperparameters Validator Key Error", 
-            message=f"Hyperparameter key '{key}' not found!", 
+            title="Hyperparameters Validator Key Error",
+            message=f"Hyperparameter key '{key}' not found!",
             details={"missing_key": key},
             code=500,
         )

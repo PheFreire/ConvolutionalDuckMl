@@ -1,5 +1,7 @@
-from modules.hyperparameters.domain.interfaces.terminals import ILoadHyperTerminal
 from abc import ABC, abstractmethod
+
+from modules.hyperparameters.domain.interfaces.terminals import \
+    ILoadHyperTerminal
 
 
 class IBuildHyperState(ABC):
@@ -19,4 +21,3 @@ class IBuildHyperState(ABC):
             - ILoadHyperTerminal: The final step that return the constructed hyperparameters.
         """
         pass
-

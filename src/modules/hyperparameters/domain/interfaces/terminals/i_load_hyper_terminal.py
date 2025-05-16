@@ -1,5 +1,7 @@
-from modules.hyperparameters.domain.dtos import HyperparametersDto
 from abc import ABC, abstractmethod
+
+from modules.hyperparameters.domain.dtos import HyperparametersDto
+
 
 class ILoadHyperTerminal(ABC):
     @abstractmethod
@@ -18,4 +20,3 @@ class ILoadHyperTerminal(ABC):
             - HyperparametersDto: loaded hyperparameters.
         """
         pass
-

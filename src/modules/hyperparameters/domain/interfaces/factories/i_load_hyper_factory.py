@@ -1,6 +1,10 @@
-from modules.hyperparameters.domain.interfaces.states import IReadHyperFileState
 from abc import ABC, abstractmethod
+
 from duckdi import Interface
+
+from modules.hyperparameters.domain.interfaces.states import \
+    IReadHyperFileState
+
 
 @Interface
 class ILoadHyperFactory(ABC):

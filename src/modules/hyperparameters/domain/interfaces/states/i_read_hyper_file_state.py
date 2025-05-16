@@ -1,5 +1,8 @@
-from modules.hyperparameters.domain.interfaces.states.i_validate_hyper_sections_state import IValidateHyperSectionsState
 from abc import ABC, abstractmethod
+
+from modules.hyperparameters.domain.interfaces.states.i_validate_hyper_sections_state import \
+    IValidateHyperSectionsState
+
 
 class IReadHyperFileState(ABC):
     @abstractmethod

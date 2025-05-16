@@ -3,14 +3,13 @@ from typing import Dict, Optional
 
 from duckdi import Interface
 
-from modules.hyperparameters.domain.dtos import (
-    TrainingHyperparameterDto,
-    DatasetHyperparameterDto,
-    LayerHyperparameterDto,
-    ModelHyperparameterDto,
-    HyperparametersDto,
-)
-from modules.hyperparameters.domain.dtos.output_hyperparameter_dto import OutputHyperparameterDto
+from modules.hyperparameters.domain.dtos import (DatasetHyperparameterDto,
+                                                 HyperparametersDto,
+                                                 LayerHyperparameterDto,
+                                                 ModelHyperparameterDto,
+                                                 OutputHyperparameterDto,
+                                                 TrainingHyperparameterDto)
+
 
 @Interface
 class IHyperparametersRepository(ABC):
@@ -22,6 +21,7 @@ class IHyperparametersRepository(ABC):
     # Attributes:
         - `__hyperparameters` (Optional[HyperparametersDto]): The hyperparameters data.
     """
+
     __hyperparameters: Optional[HyperparametersDto]
 
     @classmethod
@@ -43,12 +43,12 @@ class IHyperparametersRepository(ABC):
         """
         # Retrieves the model configuration from the stored hyperparameters.
 
-        The `model` property fetches the model-related hyperparameters from the loaded data, such as the 
-        plugged dataset, layers, training configuration, and output configuration. It raises an error 
+        The `model` property fetches the model-related hyperparameters from the loaded data, such as the
+        plugged dataset, layers, training configuration, and output configuration. It raises an error
         if the hyperparameters are not loaded.
 
         # Returns:
-            - ModelHyperparameterDto: The model configuration, which contains the dataset, layers, 
+            - ModelHyperparameterDto: The model configuration, which contains the dataset, layers,
               training, and output settings.
 
         # Raises:
@@ -67,7 +67,7 @@ class IHyperparametersRepository(ABC):
         # Raises:
             - ValueError: If hyperparameters are not loaded, an error is raised.
         """
-    
+
     @property
     @abstractmethod
     def layers(self) -> Dict[str, LayerHyperparameterDto]:
@@ -106,7 +106,7 @@ class IHyperparametersRepository(ABC):
         # Raises:
             - ValueError: If hyperparameters are not loaded, an error is raised.
         """
-    
+
     @abstractmethod
     def __str__(self) -> str:
         pass

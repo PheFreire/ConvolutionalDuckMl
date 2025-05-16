@@ -1,7 +1,7 @@
 [model]
 name = ""
 plugged_dataset = "default" # Dataset used for training
-plugged_layers = ["layer_name"] # Layers used in the model
+plugged_layers = ["layer_name", "layer_name2", "layer_name3"] # Layers used in the model
 plugged_training = "training_name" # Training configuration used
 plugged_output = "output_name" # Output configuration (model's final output)
 
@@ -20,6 +20,15 @@ samples = [
 [layers]
 
 [layers.layer_name]
+activation = "relu" # Activation function
+num_nodes = 4 # Number of nodes in this layer
+
+[layers.layer_name2]
+activation = "relu" # Activation function
+num_nodes = 4 # Number of nodes in this layer
+
+
+[layers.layer_name3]
 activation = "relu" # Activation function
 num_nodes = 4 # Number of nodes in this layer
 

@@ -1,5 +1,8 @@
-from modules.hyperparameters.domain.interfaces.states.i_build_hyper_state import IBuildHyperState
 from abc import ABC, abstractmethod
+
+from modules.hyperparameters.domain.interfaces.states.i_build_hyper_state import \
+    IBuildHyperState
+
 
 class IValidateHyperSectionsState(ABC):
     @abstractmethod
@@ -29,4 +32,3 @@ class IValidateHyperSectionsState(ABC):
             IValidateOutputSectionState: The final state responsible for validating the output section of the hyperparameters.
         """
         pass
-

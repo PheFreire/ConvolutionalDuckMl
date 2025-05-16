@@ -1,18 +1,20 @@
 from typing import Literal
+
 from pydantic import BaseModel, Field
+
 
 class TrainingHyperparameterDto(BaseModel):
     """
     DTO (Data Transfer Object) representing the hyperparameters for training a machine learning model.
-    
+
     Attributes:
     - gradient_descendent (str): The type of gradient descent to be used in the training process. Options include 'batch', 'stochastic', or 'mini_batch'.
     - learning_rate (float): The learning rate used for updating the weights during training.
     - batch_size (int): The number of samples to be processed in one forward/backward pass during training.
     - num_epochs (int): The total number of training epochs, or iterations over the entire dataset.
     """
-    
-    gradient_descendent: Literal['batch', 'stochastic', 'mini_batch'] = Field(
+
+    gradient_descendent: Literal["batch", "stochastic", "mini_batch"] = Field(
         description="Type of gradient descent to be used during training. Can be one of: 'batch', 'stochastic', or 'mini_batch'.",
         default="batch",
     )
@@ -34,4 +36,3 @@ class TrainingHyperparameterDto(BaseModel):
         default=100,
         ge=1,
     )
-

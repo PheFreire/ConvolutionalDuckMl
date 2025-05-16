@@ -1,8 +1,12 @@
-from typing import Any, Iterator, List, Self, Union, TypeAlias
 from abc import ABC, abstractmethod
+from typing import Any, Iterator, List, Self, TypeAlias, Union
 
-Matrix: TypeAlias = Union[float, list['Matrix']]
+from duckdi import Interface
 
+Matrix: TypeAlias = Union[float, list["Matrix"]]
+
+
+@Interface
 class ITensor(ABC):
     @classmethod
     @abstractmethod
@@ -151,7 +155,7 @@ class ITensor(ABC):
         Modifications to the copy will not affect the original.
         """
         pass
- 
+
     @abstractmethod
     def max(self) -> float:
         """

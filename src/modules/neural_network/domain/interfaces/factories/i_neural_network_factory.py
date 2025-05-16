@@ -1,6 +1,9 @@
-from modules.neural_network.domain.interfaces.states import IMapInputLayerState
-from abc import abstractmethod, ABC
+from abc import ABC, abstractmethod
+
 from duckdi import Interface
+
+from modules.neural_network.domain.interfaces.states import IMapInputLayerState
+
 
 @Interface
 class INeuralNetworkFactory(ABC):

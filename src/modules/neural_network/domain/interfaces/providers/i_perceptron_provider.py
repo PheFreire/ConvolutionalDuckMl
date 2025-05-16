@@ -1,14 +1,82 @@
-from modules.neural_network.domain.interfaces.providers.i_activation_function_provider import IActivationFunctionProvider
-from modules.neural_network.domain.interfaces.providers.i_tensor_provider import ITensor
 from abc import ABC, abstractmethod
 from typing import Self
+
 from duckdi import Interface
+
+from modules.neural_network.domain.interfaces.providers.i_activation_function_provider import \
+    IActivationFunctionProvider
+from modules.neural_network.domain.interfaces.providers.i_tensor_provider import \
+    ITensor
+
 
 @Interface
 class IPerceptronProvider(ABC):
+    @property
+    @abstractmethod
+    def w(self) -> ITensor:
+        """
+        Get the weight tensor of the perceptron.
+
+        The weight tensor is a 1D tensor representing the connection weights
+        between the input features and this perceptron. It should have a length
+        equal to the number of input features.
+
+        Returns:
+            ITensor: The current weight tensor of the perceptron.
+        """
+        pass
+
+    @property
+    @abstractmethod
+    def b(self) -> ITensor:
+        """
+        Get the bias tensor of the perceptron.
+
+        The bias tensor is typically a single-element tensor (scalar) that is added
+        to the result of the weighted input sum before applying the activation function.
+
+        Returns:
+            ITensor: The current bias tensor of the perceptron.
+        """
+        pass
+
+    @property
+    @abstractmethod
+    def activation_function(self) -> IActivationFunctionProvider:
+        """
+        Get the activation function provider assigned to the perceptron.
+
+        This object defines both the forward activation function and its derivative
+        used during backpropagation.
+
+        Returns:
+            IActivationFunctionProvider: The provider responsible for computing the
+            activation function and its derivative.
+        """
+        pass
+
+    @property
+    @abstractmethod
+    def tensor_type(self) -> ITensor:
+        """
+        Get the tensor adapter used internally by the perceptron.
+
+        This property defines which tensor backend (e.g., NumPy, PyTorch, etc.) is used
+        by this perceptron for all tensor operations.
+
+        Returns:
+            ITensor: A base tensor instance representing the backend for tensor manipulation.
+        """
+        pass
+
     @classmethod
     @abstractmethod
-    def new(cls, input_size: int, activation_function: IActivationFunctionProvider, tensor_type: ITensor) -> Self:
+    def new(
+        cls,
+        input_size: int,
+        activation_function: IActivationFunctionProvider,
+        tensor_type: ITensor,
+    ) -> Self:
         """
         Create a new perceptron instance with initialized weights and bias.
 
@@ -62,7 +130,7 @@ class IPerceptronProvider(ABC):
             ITensor: The propagated gradient with respect to the perceptron's input.
         """
         pass
-    
+
     @abstractmethod
     def copy(self) -> Self:
         """
@@ -75,4 +143,3 @@ class IPerceptronProvider(ABC):
             Self: A new instance identical to the current perceptron.
         """
         pass
-

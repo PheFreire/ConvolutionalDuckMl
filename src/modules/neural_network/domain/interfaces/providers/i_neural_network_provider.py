@@ -1,24 +1,65 @@
-from modules.neural_network.domain.interfaces.providers import ITensor, ILayerProvider, IErrorFunctionProvider
 from abc import ABC, abstractmethod
-from typing import Dict, Self
+from typing import List, Self
 
+from duckdi import Interface
+
+from modules.neural_network.domain.interfaces.providers.i_error_function_provider import \
+    IErrorFunctionProvider
+from modules.neural_network.domain.interfaces.providers.i_layer_provider import \
+    ILayerProvider
+from modules.neural_network.domain.interfaces.providers.i_tensor_provider import \
+    ITensor
+
+
+@Interface
 class INeuralNetworkProvider(ABC):
-    @classmethod
+    @property
     @abstractmethod
-    def new(cls, layers: Dict[str, ILayerProvider], error_function: IErrorFunctionProvider) -> Self:
+    def layers(self) -> List[ILayerProvider]:
         """
-        Create a new neural network instance with defined layers and error function.
+        Get the list of layers that compose the neural network.
 
-        This factory method constructs the neural network using the provided mapping
-        of labeled layers (e.g., "input", "hidden_1", "output") and an error function
-        to compute the loss and its gradient.
-
-        Args:
-            layers (Dict[str, ILayerProvider]): A dictionary mapping layer names to their implementations.
-            error_function (IErrorFunctionProvider): The error function used to compute the loss and its gradient.
+        This property provides access to the internal ordered list of layers,
+        from input to output, that define the structure and depth of the model.
 
         Returns:
-            Self: A fully initialized instance of the neural network.
+            List[ILayerProvider]: A list of all layers within the network.
+        """
+        pass
+
+    @property
+    @abstractmethod
+    def error_function(self) -> IErrorFunctionProvider:
+        """
+        Get the error (loss) function used by the neural network.
+
+        This function is responsible for computing the loss between predicted
+        and expected outputs during forward propagation, as well as computing
+        gradients during backpropagation.
+
+        Returns:
+            IErrorFunctionProvider: The error function implementation.
+        """
+        pass
+
+    @classmethod
+    @abstractmethod
+    def new(
+        cls, layers: List[ILayerProvider], error_function: IErrorFunctionProvider
+    ) -> Self:
+        """
+        Instantiate a new neural network using the given ordered layers and error function.
+
+        This factory method builds the network architecture with the provided sequential list of layers.
+        The layers are applied in the order they appear in the list. An error function implementation
+        is used to compute both the loss during forward propagation and the gradient during backward propagation.
+
+        Args:
+            layers (List[ILayerProvider]): A list of neural network layers, ordered from input to output.
+            error_function (IErrorFunctionProvider): The error function used for loss calculation and gradient computation.
+
+        Returns:
+            Self: A fully initialized neural network instance.
         """
         pass
 
@@ -51,4 +92,3 @@ class INeuralNetworkProvider(ABC):
             l_rate (ITensor): A tensor representing the learning rate to apply during parameter updates.
         """
         pass
-

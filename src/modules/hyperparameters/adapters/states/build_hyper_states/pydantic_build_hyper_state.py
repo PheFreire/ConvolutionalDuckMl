@@ -1,15 +1,17 @@
-from modules.hyperparameters.domain.interfaces.states.i_build_hyper_state import IBuildHyperState
-from modules.hyperparameters.domain.interfaces.terminals.i_load_hyper_terminal import ILoadHyperTerminal
-from modules.hyperparameters.adapters.terminals.load_hyper_terminals.load_hyper_terminal import LoadHyperTerminal
-from modules.hyperparameters.domain.dtos import (
-    TrainingHyperparameterDto,
-    DatasetHyperparameterDto,
-    OutputHyperparameterDto,
-    LayerHyperparameterDto,
-    ModelHyperparameterDto,
-    HyperparametersDto,
-)
 from typing import Dict
+
+from modules.hyperparameters.adapters.terminals.load_hyper_terminals.load_hyper_terminal import \
+    LoadHyperTerminal
+from modules.hyperparameters.domain.dtos import (DatasetHyperparameterDto,
+                                                 HyperparametersDto,
+                                                 LayerHyperparameterDto,
+                                                 ModelHyperparameterDto,
+                                                 OutputHyperparameterDto,
+                                                 TrainingHyperparameterDto)
+from modules.hyperparameters.domain.interfaces.states.i_build_hyper_state import \
+    IBuildHyperState
+from modules.hyperparameters.domain.interfaces.terminals.i_load_hyper_terminal import \
+    ILoadHyperTerminal
 
 
 class PydanticBuildHyperState(IBuildHyperState):
@@ -22,11 +24,11 @@ class PydanticBuildHyperState(IBuildHyperState):
         layers: Dict[str, LayerHyperparameterDto],
     ) -> None:
         self.hyperparameters = {
-            "training": training, 
-            "dataset": dataset, 
-            "output": output, 
+            "training": training,
+            "dataset": dataset,
+            "output": output,
             "layers": layers,
-            "model": model, 
+            "model": model,
         }
 
     def call(self) -> ILoadHyperTerminal:

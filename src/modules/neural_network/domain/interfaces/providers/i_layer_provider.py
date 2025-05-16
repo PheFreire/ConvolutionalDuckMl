@@ -1,8 +1,21 @@
-from modules.neural_network.domain.interfaces.providers import ITensor, IPerceptronProvider
 from abc import abstractmethod
-from typing import Self
+from typing import List, Self
 
+from duckdi import Interface
+
+from modules.neural_network.domain.interfaces.providers.i_perceptron_provider import \
+    IPerceptronProvider
+from modules.neural_network.domain.interfaces.providers.i_tensor_provider import \
+    ITensor
+
+
+@Interface
 class ILayerProvider:
+    @property
+    @abstractmethod
+    def perceptrons(self) -> List[IPerceptronProvider]:
+        pass
+
     @classmethod
     @abstractmethod
     def new(cls, layer_size: int, base_perceptron: IPerceptronProvider) -> Self:
@@ -66,4 +79,3 @@ class ILayerProvider:
             int: The total number of perceptrons (neurons) in this layer.
         """
         pass
-

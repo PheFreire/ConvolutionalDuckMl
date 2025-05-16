@@ -1,6 +1,9 @@
-from modules.hyperparameters.domain.interfaces.repositories import IHyperparametersRepository
-from modules.hyperparameters.domain.interfaces.factories import ILoadHyperFactory
 from duckdi import Get
+
+from modules.hyperparameters.domain.interfaces.factories import \
+    ILoadHyperFactory
+from modules.hyperparameters.domain.interfaces.repositories import \
+    IHyperparametersRepository
 
 
 class LoadHyperparametersOrchestrator:
@@ -17,5 +20,3 @@ class LoadHyperparametersOrchestrator:
 
         self.hyperparameters_repository.refresh(hyperparameters_dto)
         return self.hyperparameters_repository
-
-
