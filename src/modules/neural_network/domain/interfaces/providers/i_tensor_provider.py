@@ -28,6 +28,15 @@ class ITensor(ABC):
 
     @classmethod
     @abstractmethod
+    def zeros(cls, *shape: int) -> Self:
+        """
+        Generate a tensor filled with zeros within the given shape.
+        Example: zeros(2, 3) → tensor with shape (2, 3)
+        """
+        pass
+
+    @classmethod
+    @abstractmethod
     def from_tensors(cls, tensors: List[Self]) -> Self:
         """
         Construct a single tensor from a list of tensors.

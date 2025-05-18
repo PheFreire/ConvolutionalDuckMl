@@ -10,10 +10,10 @@ plugged_output = "output_name" # Output configuration (model's final output)
 [datasets.default]
 address = "/home/lemon/Documentos/dev/Lemon/MlImage/dataset" # Path to the dataset
 samples = [   
-  { "name" = "car.bin", "quantity" = "*" },
-  { "name" = "crab.bin", "quantity" = "*" },
-  { "name" = "duck.bin", "quantity" = "*" },
-  { "name" = "ice_cream.bin", "quantity" = "*" },
+  # { "name" = "car.bin", "quantity" = "*" },
+  # { "name" = "crab.bin", "quantity" = "*" },
+  # { "name" = "duck.bin", "quantity" = "*" },
+  # { "name" = "ice_cream.bin", "quantity" = "*" },
   { "name" = "sock.bin", "quantity" = "*" } 
 ] # List of samples in the dataset
 

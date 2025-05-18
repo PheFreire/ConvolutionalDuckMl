@@ -1,5 +1,6 @@
 from framework import container
 from framework.utils.network_ui import network_ui
+from modules.datasets.domain.usecases.load_dataset_usecase import LoadDatasetUsecase
 from modules.hyperparameters.domain.orchestrators.load_hyperparameters_orchestrator import \
     LoadHyperparametersOrchestrator
 from modules.neural_network.adapters.providers.tensor_providers.numpy_tensor_provider import \
@@ -16,3 +17,9 @@ create_neural_network_orchestrator = CreateNeuralNetworkOrchestrator()
 network = create_neural_network_orchestrator.execute(x)
 
 print(network_ui(network))
+
+load_dataset_usecase = LoadDatasetUsecase()
+dataset_repository = load_dataset_usecase.execute()
+
+breakpoint()
+

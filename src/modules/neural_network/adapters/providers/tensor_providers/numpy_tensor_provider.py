@@ -17,6 +17,10 @@ class NumpyTensor(ITensor):
     @classmethod
     def from_random(cls, *shape: int) -> Self:
         return cls(np.random.rand(*shape))
+    
+    @classmethod
+    def zeros(cls, *shape: int) -> Self:
+        return cls(np.zeros(shape, dtype=np.float64))
 
     @classmethod
     def from_tensors(cls, tensors: List[Self]) -> Self:

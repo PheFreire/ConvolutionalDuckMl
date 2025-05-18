@@ -1,6 +1,5 @@
-from data_set.domain.interfaces.repositories.dataset_repository import \
-    DatasetSamplesRepository
+from modules.datasets.domain.interfaces.repositories.i_dataset_repository import IDatasetRepository
 
 __all__ = [
-    "DatasetSamplesRepository",
+    "IDatasetRepository",
 ]
