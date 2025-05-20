@@ -16,11 +16,11 @@ class MseErrorFunctionProvider(IErrorFunctionProvider):
     def distance(self, predicted_y: ITensor, true_y: ITensor) -> ITensor:
         tensor_type = type(predicted_y)
 
-        distance = true_y - predicted_y
+        distance = predicted_y - true_y 
         self.last_distance = distance
 
         distance_squared_sum = (distance**2).sum()
-        element_count = distance.shape()[0]
+        element_count = distance.shape()[1]
 
         return tensor_type.new([distance_squared_sum / element_count])
 

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Dict, List, Optional, Self
+from typing import Dict, List, Self
 
 from modules.datasets.domain.dtos import DatasetDto
 from duckdi import Interface
@@ -20,7 +20,13 @@ class IDatasetRepository(ABC):
         pass
     
     @abstractmethod
-    def get(self, dataset: str, start:int=0, batch: Optional[int] = None, random: bool = True) -> DatasetDto:
+    def get(
+        self, 
+        dataset: str,
+        start: int=0,
+        end: int=300,
+        random: bool=True,
+    ) -> DatasetDto:
         pass
 
     @classmethod

@@ -40,11 +40,11 @@ class NeuralNetworkProvider(INeuralNetworkProvider):
     ) -> Self:
         return cls(layers, error_function)
 
-    def propagate(self, x: ITensor, y: ITensor) -> ITensor:
+    def propagate(self, x: ITensor) -> ITensor:
         for layer in self.layers:
             x = layer.forward(x)
 
-        return self.error_function.distance(x, y)
+        return x
 
     def back_propagate(self, l_rate: ITensor) -> None:
         delta = self.error_function.backpropagate()

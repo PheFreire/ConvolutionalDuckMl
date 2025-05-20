@@ -64,19 +64,18 @@ class INeuralNetworkProvider(ABC):
         pass
 
     @abstractmethod
-    def propagate(self, x: ITensor, y: ITensor) -> ITensor:
+    def propagate(self, x: ITensor) -> ITensor:
         """
-        Perform the forward pass through all layers of the network and compute the loss.
+        Perform the forward pass through all layers of the network.
 
         Each layer receives the output of the previous one, culminating in a final prediction.
-        The loss between the final output and the target is computed using the provided error function.
 
         Args:
             x (ITensor): Input tensor representing the input features.
             y (ITensor): Ground-truth output tensor (expected labels or values).
 
         Returns:
-            ITensor: A tensor containing the scalar loss value.
+            ITensor: A tensor containing the propagate result.
         """
         pass
 
