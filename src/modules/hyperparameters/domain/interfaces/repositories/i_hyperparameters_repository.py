@@ -1,15 +1,15 @@
-from abc import ABC, abstractmethod
 from typing import Dict, Optional, Self
-
+from abc import ABC, abstractmethod
 from duckdi import Interface
 
-from modules.hyperparameters.domain.dtos import (DatasetHyperparameterDto,
-                                                 HyperparametersDto,
-                                                 LayerHyperparameterDto,
-                                                 ModelHyperparameterDto,
-                                                 OutputHyperparameterDto,
-                                                 TrainingHyperparameterDto)
-
+from modules.hyperparameters.domain.dtos import (
+    DatasetHyperparameterDto,
+    HyperparametersDto,
+    LayerHyperparameterDto,
+    ModelHyperparameterDto,
+    OutputHyperparameterDto,
+    TrainingHyperparameterDto,
+)
 
 @Interface
 class IHyperparametersRepository(ABC):

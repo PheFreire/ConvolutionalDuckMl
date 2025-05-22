@@ -7,7 +7,7 @@ from modules.hyperparameters.domain.interfaces.repositories import \
     IHyperparametersRepository
 
 
-class LoadHyperparametersOrchestrator:
+class LoadHyperparametersUsecase:
     def __init__(self) -> None:
         self.hyper_parser_provider = Get(IHyperParserProvider)
         self.hyper_serializers_factory = Get(IHyperSerializersFactory)

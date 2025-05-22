@@ -20,19 +20,19 @@ samples = [
 [layers]
 
 [layers.layer_name]
-type = "convolutional" # "convolutional" | "dense"
+propagation_type = "convolutional" # "convolutional" | "dense"
 nodes = 4 # Number of perceptrons working on this layer
 activation = "relu" # Activation function
 convolutional_parameters = { in_channels = 3, kernel = [3, 3], stride = 1, padding = 0 }
 
 [layers.layer_name2]
-type = "convolutional" # "convolutional" | "dense"
+propagation_type = "convolutional" # "convolutional" | "dense"
 nodes = 4 # Number of perceptrons working on this layer
 activation = "relu" # Activation function
 convolutional_parameters = { in_channels = 3, kernel = [3, 3], stride = 1, padding = 0 }
 
 [layers.layer_name3]
-type = "convolutional" # "convolutional" | "dense"
+propagation_type = "convolutional" # "convolutional" | "dense"
 nodes = 4 # Number of perceptrons working on this layer
 activation = "relu" # Activation function
 convolutional_parameters = { in_channels = 3, kernel = [3, 3], stride = 1, padding = 0 }
