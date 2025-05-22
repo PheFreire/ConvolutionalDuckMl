@@ -1,16 +1,23 @@
-from typing import Literal
-
 from pydantic import BaseModel, Field
+from typing import Literal, Optional
+
+from modules.hyperparameters.domain.dtos.convolutional_parameters_dto import ConvolutionalParametersDto
 
 
 class LayerHyperparameterDto(BaseModel):
     """
-    DTO (Data Transfer Object) representing the hyperparameters of a layer in a neural network model.
+    Data Transfer Object (DTO) representing the hyperparameters for a layer in a neural network model.
 
     Attributes:
-    - activation (str): The activation function used in the layer. Can be one of 'relu', 'sigmoid', 'softmax', etc.
-    - num_nodes (int): The number of nodes (neurons) in this layer. Must be at least 1.
+    - propagation_type (str): Type of layer propagation. "convolutional" for Conv2D layers, "dense" for fully connected layers.
+    - activation (str): Activation function applied after the layer's linear transformation.
+    - nodes (int): Number of perceptrons (neurons or filters) in the layer. For convolutional layers, this represents the number of filters.
+    - convolutional_parameters (ConvolutionalParametersDto, optional): Parameters specific to convolutional layers. Must be provided when propagation_type is "convolutional".
     """
+
+    propagation_type: Literal["convolutional", "dense"] = Field(
+        description='Type of the layer. Use "convolutional" for Conv2D layers or "dense" for fully connected layers.'
+    )
 
     activation: Literal[
         "relu",
@@ -22,12 +29,18 @@ class LayerHyperparameterDto(BaseModel):
         "silu",
         "gelu",
     ] = Field(
-        description="The activation function applied to the layer's output.",
+        description="Activation function applied to the output of the layer.",
         default="relu",
     )
 
-    num_nodes: int = Field(
-        description="The number of neurons (nodes) in this layer. Determines the layer's capacity.",
+    nodes: int = Field(
+        description="Number of nodes (neurons or filters) in the layer. For convolutional layers, this is the number of filters.",
         default=3,
         ge=1,
     )
+
+    convolutional_parameters: Optional[ConvolutionalParametersDto] = Field(
+        default=None,
+        description="Parameters specific to convolutional layers. Required when propagation_type is 'convolutional'.",
+    )
+

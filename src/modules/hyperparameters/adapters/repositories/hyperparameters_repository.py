@@ -1,5 +1,5 @@
 import json
-from typing import Dict, Optional
+from typing import Dict, Optional, Self
 
 from framework.app_error import AppError
 from modules.hyperparameters.domain.dtos import (DatasetHyperparameterDto,
@@ -17,8 +17,9 @@ class HyperparametersRepository(IHyperparametersRepository):
     __hyperparameters: Optional[HyperparametersDto] = None
 
     @classmethod
-    def refresh(cls, hyperparameters: HyperparametersDto) -> None:
+    def refresh(cls, hyperparameters: HyperparametersDto) -> Self:
         cls.__hyperparameters = hyperparameters
+        return cls()
 
     @property
     def model(self) -> ModelHyperparameterDto:

@@ -4,6 +4,8 @@ from modules.datasets.adapters.providers.dataset_connection_providers.bin_datase
 from modules.datasets.adapters.repositories.dataset_repositories.cache_dataset_repository import CacheDatasetRepository
 from modules.hyperparameters.adapters.factories.load_hyper_factories import \
     TomlLoadHyperFactory
+from modules.hyperparameters.adapters.factories.pydantic_hyper_serializer_factory import PydanticHyperSerializersFactory
+from modules.hyperparameters.adapters.providers.toml_hyper_parser_provider import TomlHyperParserProvider
 from modules.hyperparameters.adapters.repositories.hyperparameters_repositories.hyperparameters_repository import \
     HyperparametersRepository
 from modules.neural_network.adapters.factories.neural_network_factories.neural_network_factory import \
@@ -21,14 +23,18 @@ from modules.neural_network.adapters.providers.perceptron_providers.perceptron_p
 from modules.neural_network.adapters.providers.tensor_providers.numpy_tensor_provider import \
     NumpyTensor
 
+register(PydanticHyperSerializersFactory)
+register(HyperparametersRepository)
+register(TomlHyperParserProvider)
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
 register(BinDatasetConnectionProvider)
 register(ActivationFunctionProvider)
-register(HyperparametersRepository)
 register(MseErrorFunctionProvider)
 register(CacheDatasetRepository)
 register(NeuralNetworkProvider)
 register(NeuralNetworkFactory)
-register(TomlLoadHyperFactory)
 register(PerceptronProvider)
 register(LayerProvider)
 register(NumpyTensor)

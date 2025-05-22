@@ -1,6 +1,3 @@
-from modules.hyperparameters.domain.interfaces.factories.i_load_hyper_factory import \
-    ILoadHyperFactory
+from modules.hyperparameters.domain.interfaces.factories.i_hyper_serializers_factory import IHyperSerializersFactory
 
-__all__ = [
-    "ILoadHyperFactory",
-]
+__all__ = ['IHyperSerializersFactory', ]

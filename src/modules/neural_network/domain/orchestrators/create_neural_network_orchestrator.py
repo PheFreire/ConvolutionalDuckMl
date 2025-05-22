@@ -24,23 +24,55 @@ class CreateNeuralNetworkOrchestrator:
         self.perceptron_provider = Get(IPerceptronProvider)
         self.layer_provider = Get(ILayerProvider)
 
-    def execute(self, x: ITensor) -> INeuralNetworkProvider:
-        """
-        Builds and returns a fully configured neural network instance.
+    def execute(self, x: ITensor) -> INeuralNetworkProvider:       
+        # (Map Input Layer)
+        tensor_type = type(x)
+        x_size = x.flat().shape()[0]
 
-        Parameters:
-            x (ITensor): Input tensor to define the input shape.
 
-        Returns:
-            INeuralNetworkProvider: A complete, ready-to-train neural network instance.
-        """
+        # (Map Layer Hyperparameters)
+        layers_setups: List[LayerSetup] = []
 
-        return (
-            self.neural_network_factory.start()
-            .with_input(x)
-            .with_hyperparameters(self.hyperparameters_repository.layers)
-            .with_activation_function(self.activation_function_provider)
-            .with_perceptron(self.perceptron_provider)
-            .with_layer(self.layer_provider)
-            .end(self.neural_network_provider, self.error_function_provider)
-        )
+        for hyperparameters in self.hyperparameters_repository.layers.values():
+            layers_setups.append(
+                LayerSetup.from_hyperparameters(hyperparameters, self.x_size)
+            )
+            self.x_size = hyperparameters.num_nodes
+
+
+        # (BuildBaseActivationFunctionPerLayer)
+        activation_function_provider = self.activation_function_provider
+        
+        activation_functions = [
+            activation_function_provider.new(layer_setup.activation)
+            for layer_setup in self.layers_setups
+        ]
+
+
+        # (BuildBasePerceptronPerLayerState)
+        perceptron_provider = self.perceptron_provider
+        
+        base_perceptrons = [
+            perceptron_provider.new(
+                layer_setup.input_size, activation_function, self.tensor_type()
+            )
+            for layer_setup, activation_function in zip(
+                self.layers_setups, self.activation_functions
+            )
+        ]
+
+        # (BuildLayersState)
+        layer_provider = self.layer_provider 
+
+        layers = [
+            layer_provider.new(layer_setup.num_nodes, base_perceptron)
+            for layer_setup, base_perceptron in zip(
+                self.layers_setups, self.base_perceptrons
+            )
+        ]
+
+        # (NeuralNetworkTerminal)
+
+        neural_network_provider = self.neural_network_provider
+        error_function_provider = self.error_function_provider
+        return neural_network_provider.new(self.layers, error_function_provider)

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Optional
+from typing import Dict, Optional, Self
 
 from duckdi import Interface
 
@@ -26,7 +26,7 @@ class IHyperparametersRepository(ABC):
 
     @classmethod
     @abstractmethod
-    def refresh(cls, hyperparameters: HyperparametersDto) -> None:
+    def refresh(cls, hyperparameters: HyperparametersDto) -> Self:
         """
         # Refresh the hyperparameters stored in the repository.
 

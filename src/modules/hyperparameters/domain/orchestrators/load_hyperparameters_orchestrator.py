@@ -1,22 +1,33 @@
 from duckdi import Get
 
-from modules.hyperparameters.domain.interfaces.factories import \
-    ILoadHyperFactory
+from modules.hyperparameters.domain.interfaces.providers.i_hyper_parser_provider import IHyperParserProvider
+from modules.hyperparameters.domain.dtos.hyperparameters_dto import HyperparametersDto
+from modules.hyperparameters.domain.interfaces.factories import IHyperSerializersFactory
 from modules.hyperparameters.domain.interfaces.repositories import \
     IHyperparametersRepository
 
 
 class LoadHyperparametersOrchestrator:
     def __init__(self) -> None:
+        self.hyper_parser_provider = Get(IHyperParserProvider)
+        self.hyper_serializers_factory = Get(IHyperSerializersFactory)
         self.hyperparameters_repository = Get(IHyperparametersRepository)
-        self.load_hyper_factory = Get(ILoadHyperFactory)
 
     def execute(self) -> IHyperparametersRepository:
-        read_hyper_file_state = self.load_hyper_factory.call()
-        validate_hyper_sections_state = read_hyper_file_state.call()
-        build_hyper_state = validate_hyper_sections_state.call()
-        load_hyper_terminal = build_hyper_state.call()
-        hyperparameters_dto = load_hyper_terminal.call()
+        raw = self.hyper_parser_provider.parse()
+        
+        model = self.hyper_serializers_factory.model_hyper_provider.serialize(raw)
+        dataset = self.hyper_serializers_factory.dataset_hyper_provider.serialize(raw, model) 
+        training = self.hyper_serializers_factory.trainings_hyper_provider.serialize(raw, model)
+        output = self.hyper_serializers_factory.output_hyper_provider.serialize(raw, model)
+        layers = self.hyper_serializers_factory.layer_hyper_provider.serialize(raw, model)
 
-        self.hyperparameters_repository.refresh(hyperparameters_dto)
-        return self.hyperparameters_repository
+        return self.hyperparameters_repository.refresh(
+            HyperparametersDto(
+                training=training,
+                dataset=dataset,
+                output=output,
+                layers=layers,
+                model=model,
+            )
+        )

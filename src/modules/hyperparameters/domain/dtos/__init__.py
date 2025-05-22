@@ -1,3 +1,5 @@
+from modules.hyperparameters.domain.dtos.convolutional_parameters_dto import \
+    ConvolutionalParametersDto
 from modules.hyperparameters.domain.dtos.dataset_hyperparameter_dto import (
     DatasetHyperparameterDto, SampleHyperparameterDto)
 from modules.hyperparameters.domain.dtos.hyperparameters_dto import \
@@ -19,4 +21,5 @@ __all__ = [
     "ModelHyperparameterDto",
     "OutputHyperparameterDto",
     "TrainingHyperparameterDto",
+    "ConvolutionalParametersDto",
 ]
